@@ -9,11 +9,25 @@ import {
   getCurrentPositionAsync, 
   requestForegroundPermissionsAsync
 } from "expo-location"
+import { MeteoAPI } from "./api/meteo"
 export default function App() {
   const [ coordinates, setCoordinates] = useState();
+  const [weather, setWeather] = useState();
+  
   useEffect(()=>{
     getUserCoordinates();
   }, [])
+
+  useEffect(()=>{
+    if(coordinates){
+      fetchWeatherByCoords(coordinates)
+    }
+  }, [coordinates])
+
+  async function fetchWeatherByCoords(coords){
+    const WeatherResponse = await MeteoAPI.fetchWeatherByCoords(coords)
+    setWeather(WeatherResponse)
+  }
 
   async function getUserCoordinates(){
     const {status} = await requestForegroundPermissionsAsync()
@@ -27,6 +41,9 @@ export default function App() {
       setCoordinates({lat: "48.85", lng: "2.35"})
     }
   }
+  console.log(coordinates)
+  console.log(weather);
+
   return (
     <ImageBackground imageStyle={s.img} style={s.img_background} source={backgroundImg}>
       <SafeAreaProvider>
