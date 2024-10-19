@@ -1,4 +1,8 @@
+import { Txt } from "../Txt/Txt"
 import { s } from "./Clock.style"
 export function Clock(){
-    return <></>
+    return (
+    <>
+      <Txt>Time</Txt>
+    </>)
 }
