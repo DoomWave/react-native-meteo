@@ -1,5 +1,9 @@
 import { s } from "./App.style"
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
+import { 
+  SafeAreaProvider, 
+  SafeAreaView, 
+  useSafeAreaInsets,
+} from "react-native-safe-area-context"
 import { Home } from "./pages/Home/Home"
 import { ImageBackground } from "react-native"
 import backgroundImg from "./assets/background.png"
@@ -9,7 +13,8 @@ import {
   requestForegroundPermissionsAsync
 } from "expo-location"
 import { MeteoAPI } from "./api/meteo"
-import {useFonts } from "expo-font"
+import {useFonts } from "expo-font";
+
 export default function App() {
   const [ coordinates, setCoordinates] = useState();
   const [weather, setWeather] = useState();

@@ -18,7 +18,7 @@ export function MeteoAdvanced({ sunrise, sunset, windspeed }) {
         <StyledValue>Sunset</StyledValue>
       </StyledContainer>
       <StyledContainer>
-        <StyledLabel>{windspeed}</StyledLabel>
+        <StyledLabel>{windspeed} km/h</StyledLabel>
         <StyledValue>Windspeed</StyledValue>
       </StyledContainer>
     </View>
