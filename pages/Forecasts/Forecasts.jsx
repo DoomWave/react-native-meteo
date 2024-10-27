@@ -8,7 +8,7 @@ export function Forecasts({}) {
 
     return (
      <>
-        <Header />
+        <Header city={params.city}/>
      </>
      )
 }
