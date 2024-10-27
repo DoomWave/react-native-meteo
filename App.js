@@ -14,6 +14,8 @@ import {
 } from "expo-location"
 import { MeteoAPI } from "./api/meteo"
 import {useFonts } from "expo-font";
+import { NavigationContainer } from "@react-navigation/native"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 export default function App() {
   const [ coordinates, setCoordinates] = useState();
