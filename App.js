@@ -19,6 +19,7 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device"
+import Constants from "expo-constants"
 const Stack = createNativeStackNavigator();
 
 const navTheme = {
@@ -37,6 +38,20 @@ export default function App() {
 
   useEffect(()=>{
     subscribeToNotifications();
+    Notifications.addNotificationResponseReceivedListener((response)=>{
+      //app is in background or killed and then the notification is pressed
+      console.log(
+        "AddNotificationResponseReceivedListener",
+        response.notification.request.content.data
+      );
+    })
+    // App is opened and notification and is received
+    Notifications.addNotificationReceivedListener((notification)=> {
+      console.log(
+        "addNotificationReceivedListener",
+        notification.request.content.data
+      );
+    })
     getUserCoordinates();
   }, [])
 
@@ -58,19 +73,22 @@ export default function App() {
       });
     }
     if (Device.isDevice) {
-      const { status: existingStatus } = 
-       await Notifications.getPermissionAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== "granted") {
+      const { status : existingStatus } = 
+      await Notifications.getPermissionsAsync();
+      if(existingStatus!=="granted"){
         const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status; 
+        if(status!=="granted"){
+          alert("Failed to get permissions")
+          return;
+        }
       }
-      if (finalStatus !== "granted") {
-        alert("Failed to get push token for push notification!");
-        return;
-      }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
+      token = (
+         await Notifications.getExpoPushTokenAsync({
+        projectId: Constants.expoConfig.extra.projectId,
+      })
+    ).data;
+    // send the token to the backend for it to store
+      console.log("Token EXPO", token)
     } else {
       alert("Must use physical device for Push Notifications")
     }
